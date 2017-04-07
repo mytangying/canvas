@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+  <style>
+    canvas{
+      border: 1px solid #000;
+    }
+  </style>
+</head>
+<body>
+  <canvas width="600" height="400" id="cas"></canvas>
+  <script>
+  var cas=document.querySelector("#cas");
+  var ctx=cas.getContext("2d");
+  // // 外面的正方形
+  // ctx.moveTo(100, 100);
+  // ctx.lineTo(100, 300);
+  // ctx.lineTo(300, 300);
+  // ctx.lineTo(300, 100);
+  // // 里面的正方形
+  // ctx.moveTo(150, 150);
+  // ctx.lineTo(150, 250);
+  // ctx.lineTo(250, 250);
+  // ctx.lineTo(250, 150);
+  // ctx.fill();
+  // 外面的正方形
+  ctx.moveTo(100, 100);
+  ctx.lineTo(100, 300);
+  ctx.lineTo(400, 300);
+  ctx.lineTo(400, 100);
+  // ctx.moveTo(100, 100);
+  // ctx.lineTo(400, 100);
+  // ctx.lineTo(400, 300);
+  // ctx.lineTo(100, 300);
+  // ctx.closePath();
+  // 里面的图形
+  ctx.moveTo(250, 150);
+  ctx.lineTo(350, 200);
+  ctx.lineTo(300, 200);
+  ctx.lineTo(300, 250);
+  ctx.lineTo(200, 250);
+  ctx.lineTo(200, 200);
+  ctx.lineTo(150, 200);
+  //填充
+  ctx.fill();
+  // ctx.closePath();
+  // ctx.stroke();
+  </script>
+</body>
+</html>
