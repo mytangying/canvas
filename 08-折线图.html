@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+    canvas {
+        border: 1px solid #000;
+    }
+    </style>
+</head>
+
+<body>
+    <canvas width="600" height="400" id="cas"></canvas>
+    <script>
+    var cas = document.querySelector("#cas");
+    var ctx = cas.getContext("2d");
+    // 设置坐标轴与画布间距
+    var pl=30,
+        pr=30,
+        pt=30,
+        pb=30;
+    //设置原点
+    var x0=pl,
+        y0=cas.height-pb;
+    // 设置箭头大小
+    var arrh=15,
+        arrw=15;
+    // x轴 y轴
+    ctx.moveTo(x0, y0);
+    ctx.lineTo(cas.width-pr, y0);
+    ctx.moveTo(x0, y0);
+    ctx.lineTo(x0, pt);
+    ctx.stroke();
+    // x轴箭头
+    ctx.beginPath();
+    ctx.moveTo(cas.width-pr, y0);
+    ctx.lineTo(cas.width-pr-arrh, y0-arrw/2);
+    ctx.lineTo(cas.width-pr-arrh/2, y0);
+    ctx.lineTo(cas.width-pr-arrh, y0+arrw/2);
+    ctx.fill();
+    // y轴箭头
+    ctx.beginPath();
+    ctx.moveTo(x0, pt);
+    ctx.lineTo(x0-arrw/2, pt+arrh);
+    ctx.lineTo(x0, pt+arrh/2);
+    ctx.lineTo(x0+arrw/2, pt+arrh);
+    ctx.fill();
+    // 填充点
+    var data1 = [ [ 10, 20 ], [ 15, 13 ], [ 17, 30 ], [ 30, 10 ], [ 20, 15 ] ];
+    // x轴长度
+    var maxX=cas.width-pr-pl-arrh;
+    // y轴长度
+    var maxY=cas.height-pt-pb-arrh;
+    // 填充点最大的x
+    var dataMaxX=Math.max.apply(null,data1.map(function(v) {
+      return v[0];
+    }))
+    // console.log(dataMaxX);
+    // 填充点最大的y
+    var dataMaxY=Math.max.apply(null,data1.map(function(v){
+      return v[1];
+    }))
+    // console.log(dataMaxY);
+    // 得到坐标轴的长度与填充点的比例
+    var rateX=maxX/dataMaxX;
+    var rateY=maxY/dataMaxY;
+    ctx.fillStyle="red";
+    for (var i = 0; i < data1.length; i++) {
+      var x=data1[i][0]*rateX;
+      var y=data1[i][1]*rateY;
+      ctx.fillRect(x0+x-4, y0-(y+4), 8, 8);
+    };
+    //对数据排序，按照x轴从小到大排序
+    var arr=data1.sort(function(a,b){
+        return a[0]>b[0];
+    });
+    //连线
+    ctx.beginPath();
+    ctx.strokeStyle="red";
+    ctx.moveTo(arr[0][0]*rateX+x0, y0-arr[0][1]*rateY);
+    for(var i=1;i<arr.length;i++){
+        ctx.lineTo(arr[i][0]*rateX+x0, y0-arr[i][1]*rateY);
+    }
+    ctx.stroke();
+    </script>
+</body>
+
+</html>
