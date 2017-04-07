@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+  <style>
+    canvas{
+      border: 1px solid #000;
+    }
+  </style>
+</head>
+<body>
+  <canvas width="600" height="400" id="cas"></canvas>
+  <script>
+  var cas=document.querySelector("#cas");
+  var ctx=cas.getContext("2d");
+   //扇形
+   function Arc(config){
+    //设置扇形的一些必备属性：绘图工具ctx，圆心x，y，半径r，开始和结束的弧度封装到一个数组中
+    this.attr=config.attr;
+    // 是否逆时针，默认为false顺时针，true为逆时针
+    this.anticlockwise=config.anticlockwise||false;
+    // 描边颜色，默认为黑色
+    this.strokeStyle=config.strokeStyle||"black";
+    // 填充颜色，默认为黑色
+    this.fillStyle=config.fillStyle||"black";
+    // 线宽，默认为1px
+    this.lineWidth=config.lineWidth||1;
+  }
+  // 将所有方法封装到原型对象中
+  Arc.prototype={
+    // 指向构造函数
+    constructor:Arc,
+    // 描边方法
+    stroke:function(){
+      // 先找到必须的属性数组
+      var a=this.attr;
+      // 找到绘图工具
+      var ctx=a[0];
+      // 每次开启新路径，防止其他图形干扰
+      ctx.beginPath();
+      // 将之前默认的坐标样式储存到状态栈中
+      ctx.save();
+      ctx.lineWidth=this.lineWidth;
+      ctx.strokeStyle=this.strokeStyle;
+      //当弧度为2π时为圆，当为圆时不需要moveTo圆心，否则会多出两条线
+      if(Math.abs(a[5]-a[4])%(2*Math.PI)==0){
+        ctx.arc(a[1],a[2],a[3],a[4],a[5],this.anticlockwise);
+        ctx.stroke();
+      }else{
+        // 否则为扇形，扇形时必须加moveTo圆心和closePath（）闭合路径，否则只有一个弧线
+        ctx.moveTo(a[1], a[2]);
+        ctx.arc(a[1],a[2],a[3],a[4],a[5],this.anticlockwise);
+        ctx.closePath();
+        ctx.stroke();
+      }
+      // 将存储在状态栈中的坐标样式恢复
+      ctx.restore();
+    },
+    fill:function(){
+      var a=this.attr;
+      var ctx=a[0];
+      ctx.beginPath();
+      ctx.save();
+      ctx.lineWidth=this.lineWidth;
+      ctx.fillStyle=this.fillStyle;
+      ctx.moveTo(a[1], a[2]);
+      ctx.arc(a[1],a[2],a[3],a[4],a[5],this.anticlockwise);
+      ctx.closePath();
+      ctx.fill();
+      ctx.restore();
+    }
+  }
+  var arc=new Arc({
+      attr:[ctx,cas.width/2,cas.height/2, 100,-Math.PI/4,Math.PI/4],
+      fillStyle:"red",
+      strokeStyle:"green"
+   });
+  var arc2=new Arc({
+      attr:[ctx,cas.width/2,cas.height/2, 150,0,2*Math.PI],
+      strokeStyle:"blue"
+   }
+    )
+
+  arc.fill();
+  arc.stroke();
+  arc2.stroke();
+ 
+  
+  </script>
+</body>
+</html>

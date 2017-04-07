@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+  <style>
+    canvas{
+      border: 1px solid #000;
+    }
+  </style>
+</head>
+<body>
+  <canvas width="800" height="500" id="cas"></canvas>
+  <script>
+  var cas=document.querySelector("#cas");
+  var ctx=cas.getContext("2d");
+  // 颜色
+  var colors = ( "blueviolet,crimson,darkolivegreen,lightblue,lightsalmon,lightseagreen,lightsteelblue,lightyellow,mediumpurple,palegreen,paleturquoise,palevioletred,peru,pink,plum,powderblue,salmon,sandybrown,seagreen,sienna,teal,thistle,transparent,tomato,turquoise,violet,yellow,yellowgreen" ).split( ',' );
+    //数据
+    var data = [ 123, 156, 47, 100, 80 ,90];
+    //角度转化函数
+    function toRadian(angle){
+      return angle*Math.PI/180;
+    }
+    //设置圆心
+    var x0=cas.width/2;
+    var y0=cas.height/2;
+    // 设置半径
+    var r=150;
+    //设置开始弧度
+    var a=-90;
+    // 计算数据总和
+    var sum=data.reduce(function(a,b){
+      return a+b;
+    });
+    var data2=data.map(function(v){
+      return {value:v,angle:v*360/sum};
+    })
+    data2.forEach(function(v,i){
+      //填充文本的字体，要写在最上面要不然会影响文本的宽度测量
+      ctx.font="bold 14px 黑体";
+      // 填充文本内容：
+      var text=(v.value*100/sum)+"%";
+      // 填充文本的padding
+      var p=10;
+      // 填充文本的宽度
+      var textWidth=ctx.measureText(text).width+2*p;
+      console.log(textWidth);
+      // 圆弧上的点坐标
+      ctx.beginPath();
+      ctx.fillStyle="red";
+      var step=30;
+      var x=x0+(r+step)*Math.cos(toRadian(a+v.angle/2));
+      var y=y0+(r+step)*Math.sin(toRadian(a+v.angle/2));
+      // 画直线
+      ctx.moveTo(x0,y0);
+      ctx.lineTo(x,y);
+      // 判断在第几象限
+      if((a+v.angle/2)>-90&&(a+v.angle/2)<=90){
+        ctx.lineTo(x+textWidth,y); 
+        // 填充文本
+        ctx.fillText(text,x+p,y-p);
+      }else{
+        ctx.lineTo(x-textWidth,y); 
+        // 填充文本
+        ctx.fillText(text,x-textWidth+p,y-p);
+      }
+      ctx.stroke();
+      //画扇形
+      ctx.beginPath();
+      ctx.fillStyle=colors[i];
+      ctx.moveTo(x0,y0);
+      ctx.arc(x0, y0, r, toRadian(a),toRadian(a+=v.angle) );
+      ctx.fill();
+    });
+    // 外面的小圆圈
+    ctx.beginPath();
+    ctx.strokeStyle="red";
+    ctx.arc(x0,y0,r+5,0,toRadian(360));
+    ctx.stroke();
+  </script>
+</body>
+</html>

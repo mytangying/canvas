@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+</head>
+<body>
+  <div id="container"></div>
+  <script src="konva.js"></script>
+  <script>
+      var stage=new Konva.Stage({
+        width:600,
+        height:400,
+        container:"container"
+      })
+      var layer=new Konva.Layer();
+      var rect=new Konva.Rect({
+        x:0,
+        y:0,
+        width:600,
+        height:400,
+        fill:"red"
+      });
+      var star1=new Konva.Star({
+        x:100,
+        y:150,
+        innerRadius:25,
+        outerRadius:60,
+        numPoints:5,
+        fill:"yellow",
+        draggable:true
+        // stroke:"black"
+      })
+      var star2=new Konva.Star({
+        x:90,
+        y:50,
+        innerRadius:13,
+        outerRadius:30,
+        numPoints:5,
+        fill:"yellow",
+        draggable:true
+        // stroke:"black"
+      })
+      var star3=new Konva.Star({
+        x:160,
+        y:70,
+        innerRadius:13,
+        outerRadius:30,
+        numPoints:5,
+        fill:"yellow",
+        draggable:true
+        // stroke:"black"
+      })
+      var star4=new Konva.Star({
+        x:200,
+        y:120,
+        innerRadius:13,
+        outerRadius:30,
+        numPoints:5,
+        fill:"yellow",
+        draggable:true
+        // stroke:"black"
+      })
+      var star5=new Konva.Star({
+        x:180,
+        y:180,
+        innerRadius:13,
+        outerRadius:30,
+        numPoints:5,
+        fill:"yellow",
+        draggable:true
+        // stroke:"black"
+      })
+      layer.add(rect);
+      layer.add(star1);
+      layer.add(star2);
+      layer.add(star3);
+      layer.add(star4);
+      layer.add(star5);
+      stage.add(layer);
+      var shape = new Konva.RegularPolygon({
+        x: stage.getWidth() / 2,
+        y: stage.getHeight() / 2,
+        sides: 5,
+        radius: 70,
+        fill: 'pink',
+        stroke: 'black',
+        strokeWidth: 4,
+        shadowOffsetX: 20,
+        shadowOffsetY: 25,
+        // shadowBlurBlur: 40,
+        opacity: 0.5
+      });
+      var circle=new Konva.Circle({
+        x: stage.getWidth() / 2,
+        y: stage.getHeight() / 2,
+        radius: 70,
+        fill:"white"
+      });
+      layer.add( circle );
+      layer.add( shape );
+      layer.draw();
+  </script>
+</body>
+</html>

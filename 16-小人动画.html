@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+  <style>
+    canvas{
+      border: 1px solid #000;
+    }
+  </style>
+</head>
+<body>
+  <canvas width="600" height="400" id="cas"></canvas>
+  <script>
+  // 1.点击键盘上下左右键小人依次向上下左右走
+  // 2.当走到边缘时小人停止回到静止站立状态
+  // 3.当按下键盘空格键时暂停小人的状态
+  var cas=document.querySelector("#cas");
+  var ctx=cas.getContext("2d");
+  var img=new Image();
+  img.src="imgs/DMMban.png";
+  img.onload=function(){
+        //小人的宽度与高度
+        var width=img.width/4,
+            height=img.height/4;
+        //小人在画布中的起始位置
+        var dx=50,
+            dy=50;
+        //画布的padding即为小人能够到达的限度
+        var pd=80;
+        // 将小人放在画布中
+        ctx.clearRect(0, 0, cas.width, cas.height);
+        ctx.drawImage(img, 0,0,width,height,dx,dy,width,height);
+        // 第i行小人
+        var i=0;
+        // 声明向前后左右各自方向走的定时器变量
+        var down=null,
+            up=null,
+            left=null,
+            right=null;
+        //每次移动的距离
+        var step=5;
+        //移动的总距离
+        var translateX=dx;
+        var translateY=dy;
+        // 定时器的间隔时间
+        var time=100;
+        // 按下键盘的上下左右键向各自的方向走
+        document.onkeydown=function(e){
+          // console.log(e.keyCode);
+          if(e.keyCode==32){
+            clear();
+          }
+          //向左走
+          if(e.keyCode==37){
+            // 清除所有定时器
+            clear();
+            // 如果按下键盘左键开启向左走的定时器
+            left=setInterval(function(){
+              // clear();
+              // 清除整个画布
+              ctx.clearRect(0, 0, cas.width, cas.height);
+              // 在画布上添加图片即小人
+              ctx.drawImage(img, width*i,height,width,height,dx,dy,width,height);
+              // 移动整个canvas画布，小人也会跟随画布移动，但是小人相对于canvas画布没有移动
+              ctx.translate(-step,0);
+              //记录移动的距离
+              translateX+=-step;
+              i++;
+              i%=4;
+              // 判断是否走到头停止
+              if(translateX<=pd/3){
+                // 停止时清除定时器
+                clear();
+                // 清除整个画布
+                ctx.clearRect(0, 0, cas.width, cas.height);
+                // 让小人回到静止站立状态
+                ctx.drawImage(img, 0,height,width,height,dx,dy,width,height);
+              }
+          // console.log(e.keyCode);
+            },time);
+            // 向上走
+          }else if(e.keyCode==38){
+            clear();
+            up=setInterval(function(){
+              // clear();
+              ctx.clearRect(0, 0, cas.width, cas.height);
+              ctx.drawImage(img, width*i,3*height,width,height,dx,dy,width,height);
+              ctx.translate(0,-step);
+              //记录移动的距离
+              translateY+=-step;
+              i++;
+              i%=4;
+              // 判断是否走到头停止
+              if(translateY<=pd/3){
+                clear();
+                ctx.clearRect(0, 0, cas.width, cas.height);
+                ctx.drawImage(img, 0,3*height,width,height,dx,dy,width,height);
+                // console.log(translateY);
+              }
+          // console.log(e.keyCode);
+            },time);
+            //向右走
+          }else if(e.keyCode==39){
+            clear();
+            right=setInterval(function(){
+              // clear();
+              ctx.clearRect(0, 0, cas.width, cas.height);
+              ctx.drawImage(img, width*i,2*height,width,height,dx,dy,width,height);
+              ctx.translate(step,0);
+              //记录移动的距离
+              translateX+=step;
+              i++;
+              i%=4;
+              // 判断是否走到头停止
+              if(translateX>=cas.width-pd){
+                clear();
+                ctx.clearRect(0, 0, cas.width, cas.height);
+                ctx.drawImage(img, 0,2*height,width,height,dx,dy,width,height);
+                // console.log(translateX);
+              }
+          // console.log(e.keyCode);
+            },time);
+            //向下走
+          }else if(e.keyCode==40){
+            clear();
+            down=setInterval(function(){
+              // clear();
+              ctx.clearRect(0, 0, cas.width, cas.height);
+              ctx.drawImage(img, width*i,0,width,height,dx,dy,width,height);
+              ctx.translate(0,step);
+              //记录移动的距离
+              translateY+=step;
+              i++;
+              i%=4;
+              // 判断是否走到头停止
+              if(translateY>=cas.height-pd){
+                clear();
+                ctx.clearRect(0, 0, cas.width, cas.height);
+                ctx.drawImage(img, 0,0,width,height,dx,dy,width,height);
+                // console.log(translateY);
+              }
+              // console.log(e.keyCode);
+            }, time);
+          }
+        }
+      // 清除所有定时器的函数
+      function clear(){
+         clearInterval(down);
+         clearInterval(up);
+         clearInterval(left);
+         clearInterval(right);
+      }
+  }
+  </script>
+</body>
+</html>

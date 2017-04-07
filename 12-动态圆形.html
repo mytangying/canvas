@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+  <style>
+    canvas{
+      border: 1px solid #000;
+    }
+  </style>
+</head>
+<body>
+  <canvas width="600" height="400" id="cas"></canvas>
+  <script>
+  var cas=document.querySelector("#cas");
+  var ctx=cas.getContext("2d");
+  //设置颜色
+  ctx.fillStyle="red";
+  //设置圆心
+  var x0=cas.width/2;
+  var y0=cas.height/2;
+  // 设置半径
+  var r=150;
+  //设置开始弧度
+  var st=toRadian(-90);
+  var a=-60;
+  //角度转化函数
+  function toRadian(angle){
+    return angle*Math.PI/180;
+  }
+  // 设置定时器，间隔20ms执行一次
+  var id=setInterval(function(){
+    ctx.clearRect(0,0,cas.width,cas.height);
+    ctx.moveTo(x0, y0);
+    ctx.arc(x0, y0, r,st , toRadian(a));
+    ctx.fill();
+    a++;
+    if(a>270){
+      clearInterval(id);
+      console.log("完成");
+    }
+  }, 20);
+  </script>
+</body>
+</html>
